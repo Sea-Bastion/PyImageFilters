@@ -16,9 +16,13 @@ import json
 I'm just going to hard code the values for now but eventually I want to make them args
 """
 
+N = 8
+MaskPath  = 'resources/Mask.json'
+ImgInPath = 'resources/monkey.jpg'
+
 # ----------------------- Import Masks -------------------
 
-with open('resources/Mask.json', 'r') as MaskFile:
+with open(MaskPath, 'r') as MaskFile:
     Masks = json.load(MaskFile)
     
 Masks = [np.array(i) for i in Masks]
@@ -26,13 +30,23 @@ Masks = [np.array(i) for i in Masks]
 
 # ----------------------- Import Input Image ----------------------
 
-with Image.open("resources/monkey.jpg") as rawImage:
+
+with Image.open(ImgInPath) as rawImage:
     Img = np.asarray( rawImage ).transpose(1,0,2)
 
 dims = Img.shape
 
 
-# for x in range(dims[0]):
-#     for y in range(dims[1]):
+
+# ---------------------- directional StDev -------------------------
+
+StDev = np.zeros( (N, dims[0], dims[1]) )
+
+for n in range(N):
+    for x in range(dims[0]):
+        for y in range(dims[1]):
+            
+            
+
         
         

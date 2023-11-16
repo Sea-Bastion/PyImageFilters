@@ -4,6 +4,7 @@ Created on Tue Nov 14 13:45:49 2023
 
 @author: sebas
 """
+import numpy as np
 
 class PaddedImage:
     
@@ -12,7 +13,7 @@ class PaddedImage:
     def __init__(self, image, mode, constant=0):
         
         self.Image = image
-        self.Mode = Modes[mode]
+        self.Mode = self.Modes[mode]
         self.Const = constant
         self.Dim = image.shape
         
@@ -25,19 +26,36 @@ class PaddedImage:
         else:
             
             match self.Mode:
-                case 0:
-                    return self.Const
+                case 0: # constant
                 
-                case 1:
+                    return np.arrya(3*[self.Const])
+                
+                case 1: # clamp
                     
-                    return 0
-                case 2:
-                    return 0
-                case 3:
+                    new_x = np.clip( x, 0, self.Dim[0] )
+                    new_y = np.clip( y, 0, self.Dim[1] )
+                    
+                    return self.Image[new_x, new_y, :]
+                
+                case 2: # mirror
+                
                     new_x = x % self.Dim[0]
                     new_y = y % self.Dim[1]
                     
-                    return self.Image[x,y,:]
+                    if ( x//self.Dim[0] ) % 2:
+                        new_x = self.Dim[0] - new_x
+                    
+                    if ( x//self.Dim[1] ) % 2:
+                        new_y = self.Dim[1] - new_y
+                    
+                    return self.Image[new_x, new_y, :]
                 
-                case default:
+                case 3: # wrap
+                
+                    new_x = x % self.Dim[0]
+                    new_y = y % self.Dim[1]
+                    
+                    return self.Image[new_x, new_y, :]
+                
+                case _:
                     return 0
