@@ -27,12 +27,12 @@ Masks = [np.array(i) for i in Masks]
 # ----------------------- Import Input Image ----------------------
 
 with Image.open("resources/monkey.jpg") as rawImage:
-    Img = np.asarray( rawImage )
+    Img = np.asarray( rawImage ).transpose(1,0,2)
 
 dims = Img.shape
 
 
-for x in range(dims[0]):
-    for y in range(dims[1]):
+# for x in range(dims[0]):
+#     for y in range(dims[1]):
         
         
