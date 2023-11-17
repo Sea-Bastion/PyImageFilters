@@ -3,6 +3,10 @@
 """
 Created on Sun Nov 12 22:48:32 2023
 
+might help to speed up
+https://stackoverflow.com/questions/9786102/how-do-i-parallelize-a-simple-python-loop
+only uses CPU tho. it's basically impossible to use this on GPU resonably
+
 @author: sebas
 """
 
@@ -11,12 +15,14 @@ from PIL import Image
 from scipy import ndimage
 import argparse
 import json
+from matplotlib import pyplot as plt
 
 """
 I'm just going to hard code the values for now but eventually I want to make them args
 """
 
 N = 8
+windowRadius = 25
 MaskPath  = 'resources/Mask.json'
 ImgInPath = 'resources/monkey.jpg'
 
@@ -32,21 +38,22 @@ Masks = [np.array(i) for i in Masks]
 
 
 with Image.open(ImgInPath) as rawImage:
-    Img = np.asarray( rawImage ).transpose(1,0,2)
+    Img = np.array( rawImage ).transpose(1,0,2).astype('float32')
 
+Img /= 255
 dims = Img.shape
-
 
 
 # ---------------------- directional StDev -------------------------
 
+Means = np.zeros( (N, dims[0], dims[1], 3) )
 StDev = np.zeros( (N, dims[0], dims[1]) )
 
-for n in range(N):
-    for x in range(dims[0]):
-        for y in range(dims[1]):
-            
-            
+          
+n=0
+FullMask = np.stack( [np.zeros((51,51)), Masks[n], np.zeros((51,51))] ,2)
 
-        
-        
+Mean = ndimage.correlate(Img, FullMask, mode='wrap')
+SqMean = ndimage.correlate(Img*Img, FullMask, mode='wrap')
+
+StDev[n, :,:] = np.sqrt( np.mean(SqMean - (Mean*Mean), 2) )

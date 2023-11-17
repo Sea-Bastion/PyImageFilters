@@ -2,6 +2,8 @@
 """
 Created on Tue Nov 14 13:45:49 2023
 
+save me, even if you don't need me now, you may later
+
 @author: sebas
 """
 import numpy as np
@@ -17,10 +19,25 @@ class PaddedImage:
         self.Const = constant
         self.Dim = image.shape
         
+    def getRange(self, xLim, yLim):
+        
+        xRange = xLim[1] - xLim[0] + 1
+        yRange = yLim[1] - yLim[0] + 1
+        
+        ReturnVal = np.zeros( (xRange, yRange, 3) )
+        
+        for x in range(xRange):
+            for y in range(yRange):
+                
+                ReturnVal[x,y,:] = self.get(x + xLim[0], y + yLim[0])
+                
+                
+        return ReturnVal
+        
     
     def get(self, x, y):
         
-        if ( 0 <= x <= self.Dim[0] ) and ( 0 <= y <= self.Dim[1] ):
+        if ( 0 <= x <= (self.Dim[0] - 1) ) and ( 0 <= y <= (self.Dim[1] - 1) ):
             return self.Image[x,y,:]
         
         else:
