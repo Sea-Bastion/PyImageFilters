@@ -50,10 +50,25 @@ Means = np.zeros( (N, dims[0], dims[1], 3) )
 StDev = np.zeros( (N, dims[0], dims[1]) )
 
           
-n=0
-FullMask = np.stack( [np.zeros((51,51)), Masks[n], np.zeros((51,51))] ,2)
+for n in range(N):
+    FullMask = np.stack( [np.zeros((51,51)), Masks[n], np.zeros((51,51))] ,2)
+    
+    Mean = ndimage.correlate(Img, FullMask, mode='wrap')
+    SqMean = ndimage.correlate(Img*Img, FullMask, mode='wrap')
+    
+    Means[n, :, :] = Mean
+    StDev[n, :, :] = np.sqrt( np.mean(SqMean - (Mean*Mean), 2) ) #mean go to euc dist
+    #because this is pre sqrt you may just be able to sum before sqrt to get dist
+    
+    
+    print('finished n: {:n}'.format(n))
+    
 
-Mean = ndimage.correlate(Img, FullMask, mode='wrap')
-SqMean = ndimage.correlate(Img*Img, FullMask, mode='wrap')
+# ---------------------- Final Image Gen-------------------------------
+#%% Final Image Gen
 
-StDev[n, :,:] = np.sqrt( np.mean(SqMean - (Mean*Mean), 2) )
+q=8
+alpha = 1 / (1 + (StDev**q) )
+alphaSum = np.sum(alpha, 0)
+
+outputImg = np.sum(alpha * Means, 0)/alphaSum
