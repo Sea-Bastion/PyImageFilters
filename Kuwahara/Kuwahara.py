@@ -68,7 +68,7 @@ def ProcessDirection(n, image):
     
 with Pool(8) as p:
     f = partial( ProcessDirection, image=Img )
-    PoolOut = p.map(f, np.arange(8))
+    PoolOut = p.map(f, np.arange(N))
     
 Means = np.array([ x[0] for x in PoolOut ])
 StDev = np.array([ x[1] for x in PoolOut ])
