@@ -25,7 +25,7 @@ I'm just going to hard code the values for now but eventually I want to make the
 
 N = 8
 MaskPath  = 'resources/Mask.json'
-ImgInPath = 'resources/monkey.jpg'
+ImgInPath = '../Images/Katelyn&Me2.jpg'
 
 # ----------------------- Import Masks -------------------
 #%% Import Masks
@@ -50,6 +50,8 @@ del rawImage
 
 # ---------------------- directional StDev & Mean -------------------------
 #%% Mean and StDev Gen
+
+
 
 def ProcessDirection(n, image):
     global Means, StDev
