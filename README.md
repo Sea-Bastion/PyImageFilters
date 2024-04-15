@@ -23,3 +23,7 @@ A modification of the Kuwahara filter called the Anisotropic Kuwahara filter use
 <img src="https://github.com/Sea-Bastion/PyImageFilters/blob/main/Kuwahara/resources/MonkeyOut.jpg" width="400">
 
 **Before and then after Kuwahara**
+
+
+## How to use
+These python files were not made very user friendly and are primerilly and vector to learn some complex and weird signal/data analysis. That being said with some knowlage of python inputing and image of your own should be very trivial. For the Kuwahara filter the Path for the Image is set by a variable called `ImgInPath`. For the dithering script it's a little more involved, but the scipt is overall simpler. At the bottom there is an `open` function where the path to your image can simply be pasted into to replace the current image.
